@@ -1,0 +1,15 @@
+{
+  "name": "ftp_web_app",
+  "version": "1.0.0",
+  "description": "web application that can be used to transfer files to and from the system",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anshuman Tripathi",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
