@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>FTP transfer APP</title>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <% include partials/references.ejs %>
@@ -11,14 +10,14 @@ body {font-family: "Lato", sans-serif}
 .mySlides {display: none}
 </style>
 </head>
-<body>
+<body ng-app="uploadApp" ng-controller="uploadCtrl">
 <% include partials/navbar.ejs %>
 
 <!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:0px">
+<div class="w3-content row" style="max-width:2000px;margin-top:0px">
 
   <!-- The upload Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
+  <div ng-class=" preview_chkbx ? 'w3-center w3-padding-64 col-md-10' : 'w3-container w3-content w3-center w3-padding-64 col-md-12'" style="max-width:800px" id="band">
     <h2 class="w3-wide">THE DROP</h2>
 	<hr>
 	<form>
@@ -28,7 +27,7 @@ body {font-family: "Lato", sans-serif}
 					<h4>Email :</h4>
 				</div>
 				<div style="padding-top:5px" class="col-md-10">
-					<input class="form-control" type="Email" placeholder="Enter email, and we'll send a link once the upload is complete" name="email" required>
+					<input class="form-control" type="Email" ng-model="email" placeholder="Enter email, and we'll send a link once the upload is complete" name="email" required>
 				</div>
 			</div>
 			<br>
@@ -37,13 +36,13 @@ body {font-family: "Lato", sans-serif}
 					<h5>First Name :</h5>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" placeholder="What shall we call you." required>
+					<input class="form-control" type="text" ng-model="fname" placeholder="What shall we call you." name="fname" required>
 				</div>
 				<div style="padding-top:10px" class = "col-md-2">
 					<h5>Last Name :</h5>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" placeholder="and your last name ?" name="email">
+					<input class="form-control" type="text" ng-model="lname" placeholder="and your last name ?" name="lname">
 				</div>				
 			</div>
 			<br>
@@ -56,6 +55,9 @@ body {font-family: "Lato", sans-serif}
 				</div>
 			</div>
 			<br>
+			<div class="checkbox">
+			  <label><input type="checkbox" ng-model="preview_chkbx"> Show preview</label>
+			</div>
 			<div style="margin-top:15px" class="row">
 				<div style="padding-top:5px" class = "col-md-2"></div>
 				<div style="padding-top:5px" class = "col-md-4">
@@ -69,6 +71,13 @@ body {font-family: "Lato", sans-serif}
 	</form>
 	<hr>
     </div>
+	<div ng-hide="!preview_chkbx" class="col-md-4">
+		<div class="w3-container w3-content w3-center w3-padding-64">
+		<h2 class="w3-wide w3-center">File Analysis</h2>
+		<hr>
+		</div>
+	</div>
+	
   </div>
 
   <!-- The Contact Section -->
