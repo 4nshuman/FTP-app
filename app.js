@@ -18,6 +18,10 @@ app.get('/upload', function(req,res){
   console.log(req.query)
   res.render('upload')
 })
+app.get('/test', function(req,res){
+  console.log(req.query)
+  res.render('test')
+})
 
 //start listening
 app.listen('9452')
