@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  ng-app="uploadApp">
 <head>
 <title>FTP transfer APP</title>
 <meta charset="utf-8">
@@ -10,7 +10,7 @@ body {font-family: "Lato", sans-serif}
 .mySlides {display: none}
 </style>
 </head>
-<body ng-app="uploadApp" ng-controller="uploadCtrl">
+<body ng-controller="uploadCtrl">
 <% include partials/navbar.ejs %>
 
 <!-- Page content -->
@@ -27,7 +27,7 @@ body {font-family: "Lato", sans-serif}
 					<h4>Email :</h4>
 				</div>
 				<div style="padding-top:5px" class="col-md-10">
-					<input class="form-control" type="Email" ng-model="email" placeholder="Enter email, and we'll send a link once the upload is complete" name="email" required>
+					<input class="form-control" type="Email" ng-model="email" ng-change="getUploaderData()" placeholder="Enter email, and we'll send a link once the upload is complete" name="email" required>
 				</div>
 			</div>
 			<br>
@@ -36,14 +36,14 @@ body {font-family: "Lato", sans-serif}
 					<h5>First Name :</h5>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" ng-model="fname" placeholder="What shall we call you." name="fname" required>
+					<input class="form-control" type="text" ng-model="fname" ng-change="getUploaderData()" placeholder="What shall we call you." name="fname" required>
 				</div>
 				<div style="padding-top:10px" class = "col-md-2">
 					<h5>Last Name :</h5>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" ng-model="lname" placeholder="and your last name ?" name="lname">
-				</div>				
+					<input class="form-control" type="text" ng-model="lname" ng-change="getUploaderData()" placeholder="and your last name ?" name="lname">
+				</div>
 			</div>
 			<br>
 			<div class="row">
@@ -51,20 +51,26 @@ body {font-family: "Lato", sans-serif}
 					<h5>Select files :</h5>
 				</div>
 				<div style="padding-top:5px" class="col-md-10">
-					<input class="form-control" type="file" id="flUpload" placeholder="Select files" required>
+					<input class="form-control" type="file" id="flUpload" ng-model="flu" placeholder="Select files" required>
 				</div>
 			</div>
 			<br>
 			<div class="checkbox">
-			  <label><input type="checkbox" ng-model="preview_chkbx"> Show preview</label>
+			  <label><input type="checkbox" ng-model="preview_chkbx" ng-change="getFileSize()"> Show preview</label>
+        <br>
+        <p ng-hide="!preview_chkbx">
+          <button type="button" ng-click="getFileSize()" class="btn btn-outline-info btn-sm">
+            <span class="glyphicon glyphicon-refresh"></span> Refresh
+          </button>
+        </p>
 			</div>
 			<div style="margin-top:15px" class="row">
 				<div style="padding-top:5px" class = "col-md-2"></div>
 				<div style="padding-top:5px" class = "col-md-4">
-					<button class="form-control btn btn-success"> Upload </button>
+					<button class="form-control btn btn-outline-success"> Upload </button>
 				</div>
 				<div style="padding-top:5px" class="col-md-4">
-					<button class="form-control btn btn-danger"> Reset </button>
+					<button class="form-control btn btn-outline-danger"> Reset </button>
 				</div>
 			</div>
 		</div>
@@ -73,11 +79,75 @@ body {font-family: "Lato", sans-serif}
     </div>
 	<div ng-hide="!preview_chkbx" class="col-md-4">
 		<div class="w3-container w3-content w3-center w3-padding-64">
-		<h2 class="w3-wide w3-center">File Analysis</h2>
+		<h2 class="w3-wide w3-center">Upload Analysis</h2>
 		<hr>
+    <div class="row">
+      <div style="padding-top:10px" class="col-md-6">
+        <h5>Uploader's Name :<h5>
+      </div>
+      <div class="col-md-6">
+        <input class="form-control" type="text" ng-model="uploaderName" readonly>
+      </div>
+    </div>
+
+    <div class="row">
+      <div style="padding-top:10px" class="col-md-6">
+        <h5>Uploader's Email :<h5>
+      </div>
+      <div class="col-md-6">
+        <input class="form-control" type="text" ng-model="uploaderEmail" readonly>
+      </div>
+    </div>
+
+    <div class="row">
+      <div style="padding-top:10px" class="col-md-6">
+        <h5>Uploader's Type :<h5>
+      </div>
+      <div class="col-md-6">
+        <input class="form-control" type="text" ng-model="userCategory" readonly>
+      </div>
+    </div>
+    <br>
+    <div>
+      <table class="table table-hover table-sm">
+        <!-- thead>
+          <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead -->
+        <tbody>
+          <tr>
+            <td >File Name :</td>
+            <td ng-bind="fileName"></td>
+          </tr>
+          <tr>
+            <td>File Size :</td>
+            <td ng-bind="fileSize"></td>
+          </tr>
+          <tr>
+            <td>File Last Modified :</td>
+            <td ng-bind="fileLastModifiedDate"></td>
+          </tr>
+          <tr>
+            <td>File Type :</td>
+            <td ng-bind="fileType"></td>
+          </tr>
+          <tr>
+            <td>File Extension :</td>
+            <td ng-bind="fileExtension"></td>
+          </tr>
+          <tr>
+            <td>File Category :</td>
+            <td ng-bind="fileCategory"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
 		</div>
 	</div>
-	
+
   </div>
 
   <!-- The Contact Section -->
@@ -131,35 +201,5 @@ window.onclick = function(event) {
   }
 }
 </script>
-
-<script>
-$(document).ready(function() {
-$("#flUpload").change(function ()
-{
- var iSize = 0;
-    iSize = ($("#flUpload")[0].files[0].size / 1024);
- if (iSize / 1024 > 1)
- {
-    if (((iSize / 1024) / 1024) > 1)
-    {
-        iSize = (Math.round(((iSize / 1024) / 1024) * 100) / 100);
-        $("#lblSize").html( iSize + "Gb");
-    }
-    else
-    {
-        iSize = (Math.round((iSize / 1024) * 100) / 100)
-        $("#lblSize").html( iSize + "Mb");
-    }
- }
- else
- {
-    iSize = (Math.round(iSize * 100) / 100)
-    $("#lblSize").html( iSize  + "kb");
- }   
-});
-});
-
-</script>
-
 </body>
 </html>
